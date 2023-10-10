@@ -1,0 +1,111 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/nathanwsoe/Assignment-2/main/data/people_fully_vaccinated_cleaned.csv"
+    },
+  "hconcat": [{
+    "height": 3420,
+    "width": 80,
+    "params": [
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
+    }
+  ],
+    "mark": {
+      "type": "bar",
+      "stroke": "white"
+    },
+    "transform": [
+      {"filter": {"param": "brush"}},
+      {"filter": "datum.people_fully_vaccinated_per_hundred > 0"}
+    ],
+    "encoding": {
+      "color": {
+        "field": "people_fully_vaccinated_per_hundred",
+        "type": "quantitative",
+        "legend": null,
+        "scale": {
+          "range": ["#2f5aa6", "#3d8bbc", "#5ab4c2", "#90d0ba", "#cae9b4"]
+        }
+      },
+      "y": {
+        "field": "location",
+        "type": "nominal",
+        "axis": {"minExtent": 100, "title": null},
+        "sort": "-x"
+      },
+      "x": {
+        "field": "people_fully_vaccinated_per_hundred",
+        "aggregate": "max",
+        "scale":{"domain":  [0, 100]},
+        "axis": {"orient": "top", "title":"Percentage"}
+      },
+      "tooltip": [
+      {"field": "location", "type": "nominal", "title": "Country"},
+      {"field": "continent", "type": "nominal", "title": "Continent"},
+      {"field": "people_fully_vaccinated", "type": "quantitative", "title": "Total of fully vaccinated people", "format": ","},
+      {"field": "people_fully_vaccinated_per_hundred", "type": "quantitative", "title": "Percentage of fully vaccinated people", "format": ".2f"}
+      ],
+    "strokeWidth": {
+      "condition": [
+        {
+          "param": "highlight",
+          "empty": false,
+          "value": 2
+        }
+      ],
+      "value": 0.7
+    },
+    "strokeOpacity": {
+    "condition": [
+        {
+          "param": "highlight",
+          "empty": false,
+          "value": 1
+        }
+      ],
+      "value": 0.7
+    }
+    }
+  },
+  {
+    "height": 1000,
+    "width": 50,
+    "params": [{
+      "name": "brush",
+      "select": {
+        "type": "interval",
+        "encodings": ["y"]
+      }
+    }],
+    "mark": {
+        "type": "bar"
+    },
+    "encoding": {
+      "y": {
+        "field": "location",
+        "type": "nominal",
+        "sort": "-x",
+        "axis": null
+      },
+      "x": {
+        "field": "people_fully_vaccinated_per_hundred",
+        "aggregate": "max",
+        "axis": null
+      },
+      "color": {
+        "condition": {"param": "brush", "value": "white"},
+      "value": "#b4b4b4"
+      }
+    }
+  }],
+  "config": {
+      "style": {
+        "cell": {
+          "stroke": "transparent"
+        }
+      },
+      "background": "#c6dded"
+    }
+  }
